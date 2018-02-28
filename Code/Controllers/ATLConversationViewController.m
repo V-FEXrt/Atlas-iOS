@@ -618,8 +618,14 @@ static NSInteger const ATLPhotoActionSheet = 1000;
         return;
     }
     
+    if (self.addressBarController) [self.addressBarController disable];
+    
     // If there's no content in the input field, send the location.
     NSOrderedSet *messages = [self messagesForMediaAttachments:messageInputToolbar.mediaAttachments];
+    
+    // Don't send message if nil
+    if (!messages) return;
+    
     if (messages.count == 0 && messageInputToolbar.textInputView.text.length == 0) {
         [self sendLocationMessage];
     } else {
@@ -627,7 +633,6 @@ static NSInteger const ATLPhotoActionSheet = 1000;
             [self sendMessage:message];
         }
     }
-    if (self.addressBarController) [self.addressBarController disable];
 }
 
 - (void)messageInputToolbarDidType:(ATLMessageInputToolbar *)messageInputToolbar
